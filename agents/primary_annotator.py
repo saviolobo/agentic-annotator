@@ -59,7 +59,8 @@ class AnnotatorOutput(BaseModel):
         return v
 
 
-def _build_user_prompt(query: str) -> str:
+def build_annotation_context(query: str) -> str:
+    """Build the shared user prompt used by Primary and Validator agents."""
     valid = list_valid_intents()
     intent_list = "\n".join(f"- {e['intent_name']}" for e in valid)
 
@@ -112,7 +113,7 @@ def _get_client() -> Cerebras:
 )
 def annotate(query: str) -> AnnotatorOutput:
     """Assign an intent label to a banking customer query."""
-    user_prompt = _build_user_prompt(query)
+    user_prompt = build_annotation_context(query)
     response = _get_client().chat.completions.create(
         model="qwen-3-235b-a22b-instruct-2507",
         messages=[
