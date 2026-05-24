@@ -1,0 +1,1157 @@
+[
+  {
+    "intent_name": "Refund_not_showing_up",
+    "definition": "A previously approved or processed refund has not appeared in the customer's account balance or statement within the expected timeframe.",
+    "example_queries": [
+      "I don't see my refund money yet in my account. I asked the merchant a while ago for a refund, so I don't know what's taking so long.  Can you look into it and see if the money is there, just not in my account yet?",
+      "Why am I missing my refund",
+      "Please help me.  I am still waiting on a refund."
+    ],
+    "edge_cases": "Distinguish from request_refund (customer hasn't asked yet) and reverted_card_payment (merchant reversal, not a refund). Key signal: customer already initiated or was promised a refund and is chasing it.",
+    "commonly_confused_with": [
+      "request_refund",
+      "reverted_card_payment?",
+      "cash_withdrawal_not_recognised"
+    ]
+  },
+  {
+    "intent_name": "activate_my_card",
+    "definition": "The customer wants to activate a newly received physical or virtual card so it can be used for transactions.",
+    "example_queries": [
+      "Please help me with my card.  It won't activate.",
+      "I tired but an unable to activate my card.",
+      "I want to start using my card."
+    ],
+    "edge_cases": "Differs from card_not_working (card was working before) and getting_virtual_card (obtaining a card vs activating one already received).",
+    "commonly_confused_with": [
+      "card_not_working",
+      "card_about_to_expire",
+      "card_arrival"
+    ]
+  },
+  {
+    "intent_name": "age_limit",
+    "definition": "The customer is asking about minimum or maximum age requirements for opening an account, using specific services, or making certain transactions.",
+    "example_queries": [
+      "I want to open an account for my children",
+      "How old do you need to be to use the banks services?",
+      "Whats the minimum age to have an account"
+    ],
+    "edge_cases": "Not a general account eligibility query. Focus is specifically on age as the limiting factor.",
+    "commonly_confused_with": [
+      "top_up_limits",
+      "disposable_card_limits",
+      "pin_blocked"
+    ]
+  },
+  {
+    "intent_name": "apple_pay_or_google_pay",
+    "definition": "The customer wants to set up, use, or troubleshoot Apple Pay or Google Pay mobile contactless payment with their card.",
+    "example_queries": [
+      "Hi, I have an apple watch. How do I use it to top up my card?",
+      "Can I use google pay to top up?",
+      "why top up is not working even if I got my American Express in Apple Bay?"
+    ],
+    "edge_cases": "Differs from contactless_not_working (NFC hardware on card) and card_linking (linking to other apps). Specific to Apple/Google wallet setup.",
+    "commonly_confused_with": [
+      "visa_or_mastercard",
+      "top_up_by_cash_or_cheque",
+      "receiving_money"
+    ]
+  },
+  {
+    "intent_name": "atm_support",
+    "definition": "The customer has a question or issue related to ATM usage, such as supported ATM networks, fees at ATMs, or general ATM functionality.",
+    "example_queries": [
+      "I can use this card at which ATMs?",
+      "Can I use the card at any cash machine?",
+      "What locations can I get money from?"
+    ],
+    "edge_cases": "Use cash_withdrawal_charge if about a specific fee charged, declined_cash_withdrawal if the ATM rejected the card, or card_swallowed if the ATM kept the card.",
+    "commonly_confused_with": [
+      "fiat_currency_support",
+      "pin_blocked",
+      "supported_cards_and_currencies"
+    ]
+  },
+  {
+    "intent_name": "automatic_top_up",
+    "definition": "The customer wants to set up, modify, or inquire about an automatic top-up rule that adds funds to their account when the balance falls below a threshold.",
+    "example_queries": [
+      "Can I add money automatically to my account while traveling?",
+      "i need help finding the auto top up option.",
+      "What are the maximum amount you can do for auto top-up?"
+    ],
+    "edge_cases": "Differs from topping_up_by_card (manual one-time top-up) and top_up_limits (asking about caps). Specific to automated/recurring top-up rules.",
+    "commonly_confused_with": [
+      "verify_top_up",
+      "top_up_failed",
+      "top_up_reverted"
+    ]
+  },
+  {
+    "intent_name": "balance_not_updated_after_bank_transfer",
+    "definition": "The customer's account balance has not reflected an expected update following an inbound or outbound bank transfer.",
+    "example_queries": [
+      "help my money isnt showing up",
+      "how do i see what i transferred",
+      "Hello. Can you help figure out why the recent transfer from my UK bank account isn't showing up?"
+    ],
+    "edge_cases": "Use pending_transfer if the transfer is shown as pending. This intent applies when the transfer appears settled but the balance is wrong, or the update is simply delayed.",
+    "commonly_confused_with": [
+      "balance_not_updated_after_cheque_or_cash_deposit",
+      "transfer_not_received_by_recipient",
+      "top_up_by_bank_transfer_charge"
+    ]
+  },
+  {
+    "intent_name": "balance_not_updated_after_cheque_or_cash_deposit",
+    "definition": "The customer's account balance has not updated after depositing a cheque or cash.",
+    "example_queries": [
+      "Why is my last cheque deposit taking so long?",
+      "I am still waiting for a the cash I deposited this morning",
+      "I tried using a check to update my balance, but it isn't work? Is something wrong?"
+    ],
+    "edge_cases": "Distinguish from balance_not_updated_after_bank_transfer (electronic transfer vs physical deposit) and pending_top_up (visible pending status).",
+    "commonly_confused_with": [
+      "balance_not_updated_after_bank_transfer",
+      "wrong_amount_of_cash_received",
+      "cash_withdrawal_not_recognised"
+    ]
+  },
+  {
+    "intent_name": "beneficiary_not_allowed",
+    "definition": "The customer is unable to add a specific recipient or is being blocked from sending money to a particular person or account.",
+    "example_queries": [
+      "is there something blocking me from making transfers",
+      "What are the reasons for my beneficiary not being allowed?",
+      "Is there something wrong with the transferring functions? I keep trying to transfer funds and only get an error message."
+    ],
+    "edge_cases": "Not a general transfer failure \u2014 the block is specific to the recipient. Differs from declined_transfer (payment attempt rejected at execution) and transfer_not_received_by_recipient (sent but not arrived).",
+    "commonly_confused_with": [
+      "direct_debit_payment_not_recognised",
+      "cash_withdrawal_not_recognised",
+      "transfer_not_received_by_recipient"
+    ]
+  },
+  {
+    "intent_name": "cancel_transfer",
+    "definition": "The customer wants to cancel or reverse a transfer that has already been initiated but may not yet have completed.",
+    "example_queries": [
+      "Cancel a transaction",
+      "Am I able to cancel a transfer I just made",
+      "I needed to make a payment on my account, but I typed in the incorrect number.  The app won't allow me to cancel this transaction.  I need it cancelled ASAP!!"
+    ],
+    "edge_cases": "Key signal is intent to stop a transfer they regret initiating. Differs from failed_transfer (involuntary failure) and declined_transfer (rejected before processing).",
+    "commonly_confused_with": [
+      "declined_transfer",
+      "pending_transfer",
+      "failed_transfer"
+    ]
+  },
+  {
+    "intent_name": "card_about_to_expire",
+    "definition": "The customer's card is nearing its expiry date and they are asking about renewal, replacement, or what happens when it expires.",
+    "example_queries": [
+      "Are there any express fees if i want my new card faster?",
+      "Do I need to do something to get a new card once it expires?",
+      "I am overseas in China, can I get a replacement card?"
+    ],
+    "edge_cases": "Differs from card_not_working (card already failed) and get_physical_card (requesting a new card unrelated to expiry).",
+    "commonly_confused_with": [
+      "card_arrival",
+      "activate_my_card",
+      "card_not_working"
+    ]
+  },
+  {
+    "intent_name": "card_acceptance",
+    "definition": "The customer is asking which merchants, countries, or networks accept their card, or why a specific merchant refused to accept it.",
+    "example_queries": [
+      "Is there anywhere I can't use my card?",
+      "In which stores can I shop with this card?",
+      "How do I know where I can use my card?"
+    ],
+    "edge_cases": "Differs from declined_card_payment (a specific transaction was declined) and country_support (asking about geographic availability of the service).",
+    "commonly_confused_with": [
+      "card_arrival",
+      "visa_or_mastercard",
+      "get_physical_card"
+    ]
+  },
+  {
+    "intent_name": "card_arrival",
+    "definition": "The customer is inquiring about the delivery status of a physical card that has been ordered but not yet received.",
+    "example_queries": [
+      "I am still waiting on my card?",
+      "What can I do if my card still hasn't arrived after 2 weeks?",
+      "I have been waiting over a week. Is the card still coming?"
+    ],
+    "edge_cases": "Differs from card_delivery_estimate (asking how long it takes in general) and order_physical_card (placing the order). Here the card is already ordered and the customer is tracking it.",
+    "commonly_confused_with": [
+      "card_delivery_estimate",
+      "card_acceptance",
+      "order_physical_card"
+    ]
+  },
+  {
+    "intent_name": "card_delivery_estimate",
+    "definition": "The customer wants to know how many days it will take to receive a card after ordering, or what the expected delivery timeframe is.",
+    "example_queries": [
+      "Can it specifically be delivered on a certain date?",
+      "I need to get my card quickly",
+      "When can I expect my card? I live in the US."
+    ],
+    "edge_cases": "Differs from card_arrival (tracking a specific in-transit card). Here the customer wants the standard delivery time estimate, often before or just after ordering.",
+    "commonly_confused_with": [
+      "card_arrival",
+      "card_acceptance",
+      "card_payment_fee_charged"
+    ]
+  },
+  {
+    "intent_name": "card_linking",
+    "definition": "The customer wants to link their card to a third-party service, app, or external bank account.",
+    "example_queries": [
+      "My card has been found. Is there any way for me to put it back into the app?",
+      "I was able to find my card. How to I go about putting it into my app?",
+      "how do I get my card to show in the app?"
+    ],
+    "edge_cases": "Differs from apple_pay_or_google_pay (specific mobile wallets) and card_not_working (general malfunction). Focus is on the linking/pairing process.",
+    "commonly_confused_with": [
+      "card_arrival",
+      "card_not_working",
+      "getting_spare_card"
+    ]
+  },
+  {
+    "intent_name": "card_not_working",
+    "definition": "The customer's physical or virtual card is not functioning for payments or other uses, with no more specific cause identified.",
+    "example_queries": [
+      "I can't use my card because it is not working.",
+      "I can't seem to be able to use my card",
+      "My card isn't working at all, I need assistance. It's really frustrating."
+    ],
+    "edge_cases": "Use more specific intents when possible: contactless_not_working, declined_card_payment, virtual_card_not_working. This is the catch-all when the failure mode is unclear.",
+    "commonly_confused_with": [
+      "card_payment_not_recognised",
+      "virtual_card_not_working",
+      "activate_my_card"
+    ]
+  },
+  {
+    "intent_name": "card_payment_fee_charged",
+    "definition": "The customer was charged an unexpected or unwanted fee on a card payment and wants an explanation or a refund of that fee.",
+    "example_queries": [
+      "There was a fee charged when I paid with my card.",
+      "I received a fee I should not have.",
+      "Why am I being a charged for using my card?"
+    ],
+    "edge_cases": "Differs from extra_charge_on_statement (unknown charge of any type) and exchange_charge (fee specific to currency exchange).",
+    "commonly_confused_with": [
+      "pending_card_payment",
+      "transfer_fee_charged",
+      "card_payment_not_recognised"
+    ]
+  },
+  {
+    "intent_name": "card_payment_not_recognised",
+    "definition": "The customer sees a card transaction on their statement that they do not recognise and did not authorise.",
+    "example_queries": [
+      "There's a payment with my card that I didn't perform. I don't know that name shown.",
+      "My statement indicates I made a payment to an unfamiliar merchant.",
+      "There's a payment with my card that I definitely didn't do myself, never seen that name before."
+    ],
+    "edge_cases": "Differs from transaction_charged_twice (recognises it but charged twice) and cash_withdrawal_not_recognised (cash, not card payment). Fraud or merchant name confusion are common triggers.",
+    "commonly_confused_with": [
+      "reverted_card_payment?",
+      "card_not_working",
+      "pending_card_payment"
+    ]
+  },
+  {
+    "intent_name": "card_payment_wrong_exchange_rate",
+    "definition": "The customer believes an incorrect or unfavourable exchange rate was applied to a card payment made in a foreign currency.",
+    "example_queries": [
+      "Last Saturday, I was charged extra for the exchange rate on my payment. Is something wrong?",
+      "Hi, I am disappointed to see such a bad exchange rate and hope you can assist me. Would you be able to confirm the official interbank exchange rate for me?",
+      "I think the currency exchange that's been applied is wrong."
+    ],
+    "edge_cases": "Differs from exchange_rate (asking what the rate is) and exchange_charge (asking about fees). The customer has already been charged and disputes the rate applied.",
+    "commonly_confused_with": [
+      "wrong_exchange_rate_for_cash_withdrawal",
+      "exchange_rate",
+      "reverted_card_payment?"
+    ]
+  },
+  {
+    "intent_name": "card_swallowed",
+    "definition": "An ATM retained (swallowed or captured) the customer's physical card during a transaction and did not return it.",
+    "example_queries": [
+      "What do I do if the ATM took my card?",
+      "What do I do now my credit card has been swallowed by the ATM?",
+      "An ATM machine didn't give me back my card."
+    ],
+    "edge_cases": "Very specific to ATM card retention. Differs from lost_or_stolen_card (card is gone but not ATM-retained) and declined_cash_withdrawal (declined but card returned).",
+    "commonly_confused_with": [
+      "card_arrival",
+      "topping_up_by_card",
+      "card_acceptance"
+    ]
+  },
+  {
+    "intent_name": "cash_withdrawal_charge",
+    "definition": "The customer was charged a fee for withdrawing cash from an ATM and wants to understand or dispute that charge.",
+    "example_queries": [
+      "Why is there a charge when I took out money?",
+      "Why have I been charged a fee for cash withdrawal?",
+      "I made a cash withdrawl and there is a charge.  What is this?"
+    ],
+    "edge_cases": "Differs from atm_support (general ATM questions) and cash_withdrawal_not_recognised (unrecognised transaction). The withdrawal is recognised but the fee is the issue.",
+    "commonly_confused_with": [
+      "pending_cash_withdrawal",
+      "cash_withdrawal_not_recognised",
+      "declined_cash_withdrawal"
+    ]
+  },
+  {
+    "intent_name": "cash_withdrawal_not_recognised",
+    "definition": "The customer sees a cash withdrawal on their account that they did not make and do not recognise.",
+    "example_queries": [
+      "I looked on the app and it says I withdrew cash.  I didn't!",
+      "I didn't withdraw the amount of cash that is showing up in the app.",
+      "I saw on the app that a cash withdrawal was completed on my account; however, I did not complete it."
+    ],
+    "edge_cases": "Differs from card_payment_not_recognised (card purchase, not cash). Strong fraud signal. Also distinguish from wrong_amount_of_cash_received (received wrong amount but recognises the withdrawal).",
+    "commonly_confused_with": [
+      "pending_cash_withdrawal",
+      "declined_cash_withdrawal",
+      "cash_withdrawal_charge"
+    ]
+  },
+  {
+    "intent_name": "change_pin",
+    "definition": "The customer wants to change the PIN number associated with their card.",
+    "example_queries": [
+      "Is it possible for me to change my PIN number?",
+      "What are the steps to change my PIN to something else?",
+      "In what way can I change my PIN and where do I need to be?"
+    ],
+    "edge_cases": "Differs from pin_blocked (PIN is locked after failed attempts) and passcode_forgotten (app passcode, not card PIN).",
+    "commonly_confused_with": [
+      "pin_blocked",
+      "card_linking",
+      "compromised_card"
+    ]
+  },
+  {
+    "intent_name": "compromised_card",
+    "definition": "The customer suspects their card details have been stolen, leaked, or used fraudulently without their physical card being lost.",
+    "example_queries": [
+      "I think someone is using my card without my permission!",
+      "What do I do if I detect fraudulent use on my car?",
+      "I think my account has been hacked there are charges on there I don't recognize."
+    ],
+    "edge_cases": "Differs from lost_or_stolen_card (physical card is missing). Here the card may still be in the customer's possession but the details are believed compromised.",
+    "commonly_confused_with": [
+      "lost_or_stolen_card",
+      "reverted_card_payment?",
+      "card_about_to_expire"
+    ]
+  },
+  {
+    "intent_name": "contactless_not_working",
+    "definition": "The customer's card fails for contactless (tap-to-pay / NFC) payments despite the card being otherwise functional.",
+    "example_queries": [
+      "Should i uninstall the app before i try it again?",
+      "How come when I tried to pay contactless at the bus it didnt work?",
+      "Why is my contactless not working?"
+    ],
+    "edge_cases": "Differs from card_not_working (general failure) and apple_pay_or_google_pay (mobile wallet NFC). The card's chip/swipe works but tap does not.",
+    "commonly_confused_with": [
+      "card_not_working",
+      "transfer_not_received_by_recipient",
+      "Refund_not_showing_up"
+    ]
+  },
+  {
+    "intent_name": "country_support",
+    "definition": "The customer is asking whether the account or card can be used in a specific country, or whether their country of residence is supported for registration.",
+    "example_queries": [
+      "Which countries are you available in?",
+      "Where are you cards supported?",
+      "How do I get a card if I live in the US?"
+    ],
+    "edge_cases": "Differs from card_acceptance (specific merchant or network) and fiat_currency_support (which currencies, not countries).",
+    "commonly_confused_with": [
+      "fiat_currency_support",
+      "supported_cards_and_currencies",
+      "atm_support"
+    ]
+  },
+  {
+    "intent_name": "declined_card_payment",
+    "definition": "A card payment at a merchant or online checkout was declined or rejected.",
+    "example_queries": [
+      "I'm not sure why my card didn't work",
+      "My card is not working at stores.",
+      "Do you know why my card payment has been declined?"
+    ],
+    "edge_cases": "Use more specific intents when the reason is known: contactless_not_working, card_acceptance, compromised_card. This is for unexplained decline at point of sale.",
+    "commonly_confused_with": [
+      "reverted_card_payment?",
+      "pending_card_payment",
+      "card_payment_not_recognised"
+    ]
+  },
+  {
+    "intent_name": "declined_cash_withdrawal",
+    "definition": "An attempt to withdraw cash at an ATM was declined or rejected.",
+    "example_queries": [
+      "I tried to withdraw cash and got declined, why is that?",
+      "Why was I declined when I tried to get my money?",
+      "I could not access my money at the ATM"
+    ],
+    "edge_cases": "Differs from card_swallowed (ATM kept the card) and cash_withdrawal_not_recognised (unauthorised withdrawal). Here the transaction was attempted and refused.",
+    "commonly_confused_with": [
+      "cash_withdrawal_not_recognised",
+      "pending_cash_withdrawal",
+      "cash_withdrawal_charge"
+    ]
+  },
+  {
+    "intent_name": "declined_transfer",
+    "definition": "A transfer initiated by the customer was declined or rejected before or during processing.",
+    "example_queries": [
+      "Transfer unable to be completed, states 'declined'",
+      "Why was my transfer request decline?",
+      "My transfer was rejected"
+    ],
+    "edge_cases": "Differs from failed_transfer (attempted but failed mid-process) and cancel_transfer (customer wants to stop it). Here the system actively refused the transfer.",
+    "commonly_confused_with": [
+      "failed_transfer",
+      "cancel_transfer",
+      "pending_transfer"
+    ]
+  },
+  {
+    "intent_name": "direct_debit_payment_not_recognised",
+    "definition": "The customer sees a direct debit charge on their account that they did not authorise or do not recognise.",
+    "example_queries": [
+      "Hi, i found a large amount payment in my old statements which i am sure was not made by me. I am aware that the time has passed but is there a way to raise a dispute for this payment now?",
+      "what is the word?",
+      "Please help my find out why there is an odd direct debit in my records."
+    ],
+    "edge_cases": "Specific to direct debits (recurring bank-authorised debits), not one-off card transactions. Differs from card_payment_not_recognised and extra_charge_on_statement.",
+    "commonly_confused_with": [
+      "card_payment_not_recognised",
+      "cash_withdrawal_not_recognised",
+      "reverted_card_payment?"
+    ]
+  },
+  {
+    "intent_name": "disposable_card_limits",
+    "definition": "The customer is asking about spending limits, validity period, or usage restrictions on a disposable (single-use) virtual card.",
+    "example_queries": [
+      "Do the disposable cards have any restrictions on them?",
+      "How many times can I use a virtual card?",
+      "A friend was telling me about her disposable cards. What would I have to do to be able to get that feature?"
+    ],
+    "edge_cases": "Differs from top_up_limits (account top-up caps) and get_disposable_virtual_card (requesting one). Focus is on understanding the limits of an already-obtained disposable card.",
+    "commonly_confused_with": [
+      "get_disposable_virtual_card",
+      "card_about_to_expire",
+      "getting_spare_card"
+    ]
+  },
+  {
+    "intent_name": "edit_personal_details",
+    "definition": "The customer wants to update personal information such as name, address, phone number, or email address on their account.",
+    "example_queries": [
+      "I am interested in changing my personal details.",
+      "I am here to change my adress.",
+      "I'd like to make some changes to my personal information."
+    ],
+    "edge_cases": "Not identity verification \u2014 this is about changing stored profile data. Differs from verify_my_identity (KYC process) and unable_to_verify_identity (verification failure).",
+    "commonly_confused_with": [
+      "verify_my_identity",
+      "transfer_into_account",
+      "change_pin"
+    ]
+  },
+  {
+    "intent_name": "exchange_charge",
+    "definition": "The customer is asking about fees charged when converting or exchanging currency.",
+    "example_queries": [
+      "How much is the exchange fee?",
+      "Are there any hidden extra fees for currency exchanges?",
+      "If I exchange currencies on a frequent basis can I receive a discount?"
+    ],
+    "edge_cases": "Differs from exchange_rate (the rate itself, not the fee) and card_payment_fee_charged (generic card fee). Focus is specifically on the cost of currency conversion.",
+    "commonly_confused_with": [
+      "transfer_fee_charged",
+      "exchange_rate",
+      "exchange_via_app"
+    ]
+  },
+  {
+    "intent_name": "exchange_rate",
+    "definition": "The customer wants to know the current exchange rate or how the app determines rates for foreign currency transactions.",
+    "example_queries": [
+      "What is my money worth in other countries?",
+      "Will my money be of equal value when I travel abroad?",
+      "Do you know the rate of exchange?"
+    ],
+    "edge_cases": "Differs from exchange_charge (fees, not rates) and card_payment_wrong_exchange_rate (disputing a rate already applied). This is an informational query about current rates.",
+    "commonly_confused_with": [
+      "card_payment_wrong_exchange_rate",
+      "wrong_exchange_rate_for_cash_withdrawal",
+      "exchange_charge"
+    ]
+  },
+  {
+    "intent_name": "exchange_via_app",
+    "definition": "The customer wants to convert or exchange currency using the in-app currency exchange feature.",
+    "example_queries": [
+      "Can I change from AUD to GBP?",
+      "I need to exchange between different currencies, like GBP and USD. Can I do that with your app?",
+      "How can I change to another currency?"
+    ],
+    "edge_cases": "Differs from exchange_rate (asking about rates only) and topping_up_by_card (adding money, not converting). Focus is on actively using the in-app exchange tool.",
+    "commonly_confused_with": [
+      "exchange_charge",
+      "exchange_rate",
+      "transfer_not_received_by_recipient"
+    ]
+  },
+  {
+    "intent_name": "extra_charge_on_statement",
+    "definition": "The customer sees an unexpected or unexplained charge on their statement and wants to understand what it is.",
+    "example_queries": [
+      "Why is there an extra fee on my statement?",
+      "Why did they charge me an extra $1?",
+      "Why is there a 1 euro fee on my statement?"
+    ],
+    "edge_cases": "More specific intents should be preferred when identifiable: card_payment_fee_charged, cash_withdrawal_charge, exchange_charge. Use this when the charge type is unknown.",
+    "commonly_confused_with": [
+      "transaction_charged_twice",
+      "exchange_charge",
+      "transfer_fee_charged"
+    ]
+  },
+  {
+    "intent_name": "failed_transfer",
+    "definition": "A transfer was initiated and attempted but failed to complete, with uncertainty about whether the funds left the account.",
+    "example_queries": [
+      "What is happening?  I have tried to transfer money 5x already.  Is the system down?  This shouldnt be happening as this is a basic transfer.",
+      "Is there a reason that my transfer failed?",
+      "Why didn't my transfer complete?"
+    ],
+    "edge_cases": "Differs from declined_transfer (rejected before processing) and cancel_transfer (customer-initiated stop). Here the transfer started but something went wrong mid-process.",
+    "commonly_confused_with": [
+      "declined_transfer",
+      "cancel_transfer",
+      "transfer_not_received_by_recipient"
+    ]
+  },
+  {
+    "intent_name": "fiat_currency_support",
+    "definition": "The customer is asking which traditional (fiat) currencies are supported for holding balances, sending, or receiving money.",
+    "example_queries": [
+      "How many different currencies can I hold money in?",
+      "Do you allow currency exchanges?",
+      "How many currencies can I have money in in my account?"
+    ],
+    "edge_cases": "Differs from country_support (countries, not currencies) and supported_cards_and_currencies (broader question also including card networks).",
+    "commonly_confused_with": [
+      "supported_cards_and_currencies",
+      "exchange_rate",
+      "atm_support"
+    ]
+  },
+  {
+    "intent_name": "get_disposable_virtual_card",
+    "definition": "The customer wants to obtain a new single-use or disposable virtual card number for secure online purchases.",
+    "example_queries": [
+      "What do you use disposable cards on?",
+      "How do I get a disposable virtual card as well?",
+      "I want a disposable virtual card, how do I do that?"
+    ],
+    "edge_cases": "Differs from getting_virtual_card (permanent virtual card) and disposable_card_limits (asking about limits of one already held).",
+    "commonly_confused_with": [
+      "getting_virtual_card",
+      "disposable_card_limits",
+      "virtual_card_not_working"
+    ]
+  },
+  {
+    "intent_name": "get_physical_card",
+    "definition": "The customer wants to request or order a physical card to be mailed to their address.",
+    "example_queries": [
+      "I'm not sure what to do about the PIN, because I don't have one yet.",
+      "Is my PIN sent separably?",
+      "Where can I get my card PIN?"
+    ],
+    "edge_cases": "Closely related to order_physical_card. Use get_physical_card when the customer is asking how to get one; order_physical_card when placing or tracking a specific order.",
+    "commonly_confused_with": [
+      "order_physical_card",
+      "card_acceptance",
+      "getting_virtual_card"
+    ]
+  },
+  {
+    "intent_name": "getting_spare_card",
+    "definition": "The customer wants an additional physical card for the same account, either as a backup or for a secondary user.",
+    "example_queries": [
+      "Are extra charges added for sending out additional cards?",
+      "I'd like to order an additional card",
+      "I want some extra physical cards."
+    ],
+    "edge_cases": "Differs from get_physical_card (first-time request) and lost_or_stolen_card (replacement after loss). Here the customer already has a card and wants an extra one.",
+    "commonly_confused_with": [
+      "lost_or_stolen_card",
+      "card_arrival",
+      "compromised_card"
+    ]
+  },
+  {
+    "intent_name": "getting_virtual_card",
+    "definition": "The customer wants to get or access a permanent virtual card number for online payments.",
+    "example_queries": [
+      "I would like to order a virtual card, where can I get one?",
+      "I need to order a new virtual card, how do I do that?",
+      "How can I sign up for a virtual card?"
+    ],
+    "edge_cases": "Differs from get_disposable_virtual_card (one-time use) and virtual_card_not_working (already has one but it's broken). Focus is on obtaining a reusable virtual card.",
+    "commonly_confused_with": [
+      "virtual_card_not_working",
+      "get_disposable_virtual_card",
+      "get_physical_card"
+    ]
+  },
+  {
+    "intent_name": "lost_or_stolen_card",
+    "definition": "The customer's physical card has been lost or stolen and they need to report it, freeze it, or request a replacement.",
+    "example_queries": [
+      "Has there been any activity on my card today?",
+      "I lost my wallet and all my cards were in it.",
+      "I'm panicking!  I lost my card!  Help!"
+    ],
+    "edge_cases": "Differs from compromised_card (card in hand but details stolen) and card_not_working (card present but malfunctioning). Physical card is missing.",
+    "commonly_confused_with": [
+      "lost_or_stolen_phone",
+      "compromised_card",
+      "getting_spare_card"
+    ]
+  },
+  {
+    "intent_name": "lost_or_stolen_phone",
+    "definition": "The customer's phone has been lost or stolen, impacting their access to the banking app and potentially their financial security.",
+    "example_queries": [
+      "My phone was stolen, what should I do first?",
+      "My phone was stolen, what should I do?",
+      "I lost my phone, what should I do?"
+    ],
+    "edge_cases": "Differs from lost_or_stolen_card (card, not phone). The concern is app access, linked card security, or apple/google pay exposure on the missing device.",
+    "commonly_confused_with": [
+      "lost_or_stolen_card",
+      "compromised_card",
+      "getting_spare_card"
+    ]
+  },
+  {
+    "intent_name": "order_physical_card",
+    "definition": "The customer is placing or tracking an order for a new physical card.",
+    "example_queries": [
+      "How much does it cost for a physical card?",
+      "Where can the cards be delivered?",
+      "What do i do to get a physical card?"
+    ],
+    "edge_cases": "Closely related to get_physical_card. Use order_physical_card when the customer explicitly mentions ordering or has already ordered. Overlaps with card_arrival for in-transit cards.",
+    "commonly_confused_with": [
+      "get_physical_card",
+      "card_arrival",
+      "card_acceptance"
+    ]
+  },
+  {
+    "intent_name": "passcode_forgotten",
+    "definition": "The customer has forgotten their app login passcode or PIN and needs to reset or recover access.",
+    "example_queries": [
+      "Help me!  I don't know what my password is.",
+      "I thought I knew my password but I guess I was wrong, what can I do now?",
+      "I am unable to access my app due to forgetting my passcode."
+    ],
+    "edge_cases": "Differs from pin_blocked (card PIN locked, not app passcode) and change_pin (wants to change, not forgotten). Focus is on app access recovery.",
+    "commonly_confused_with": [
+      "lost_or_stolen_card",
+      "pin_blocked",
+      "activate_my_card"
+    ]
+  },
+  {
+    "intent_name": "pending_card_payment",
+    "definition": "A card payment is showing as pending rather than settled, and the customer has questions about when it will complete or why it is stuck.",
+    "example_queries": [
+      "What does it mean when a payment is pending?",
+      "Could you please tell me why my purchases from this morning say payment is pending?",
+      "The purchase I made is still pending."
+    ],
+    "edge_cases": "Differs from declined_card_payment (rejected) and card_payment_not_recognised (unknown charge). The transaction is recognised but not yet settled.",
+    "commonly_confused_with": [
+      "card_payment_not_recognised",
+      "card_payment_fee_charged",
+      "declined_card_payment"
+    ]
+  },
+  {
+    "intent_name": "pending_cash_withdrawal",
+    "definition": "A cash withdrawal is showing as pending on the account rather than having fully settled.",
+    "example_queries": [
+      "I would like to know why a withdraw I made for some cash shows up as pending.",
+      "Why is my cash withdrawal still showing as pending?",
+      "I have the cash already, my account still shows up as pending.  How can my account be still pending?"
+    ],
+    "edge_cases": "Differs from declined_cash_withdrawal (rejected) and cash_withdrawal_not_recognised (unknown). The withdrawal is recognised but pending settlement.",
+    "commonly_confused_with": [
+      "cash_withdrawal_not_recognised",
+      "cash_withdrawal_charge",
+      "declined_cash_withdrawal"
+    ]
+  },
+  {
+    "intent_name": "pending_top_up",
+    "definition": "A top-up (account deposit) is showing as pending and the funds have not yet been credited to the account.",
+    "example_queries": [
+      "How long does a top-up take to go through?",
+      "I am under the impression that my top up is still pending",
+      "How long will it take for my money to be deposited?"
+    ],
+    "edge_cases": "Differs from top_up_failed (failed, not pending) and balance_not_updated_after_bank_transfer (no pending indicator visible). The top-up is visible as pending.",
+    "commonly_confused_with": [
+      "verify_top_up",
+      "top_up_failed",
+      "top_up_reverted"
+    ]
+  },
+  {
+    "intent_name": "pending_transfer",
+    "definition": "A transfer is showing as pending and the recipient has not yet received the funds.",
+    "example_queries": [
+      "i put in money for vacation and its not showing. i need that money today, how long will it take",
+      "I can't figure out why a transfer is still pending?",
+      "Transfers can take up to one day to process before departing for the beneficiary accounts. Please confirm that you've entered your account details correctly. SEPA transfers can take up to two working days, while SWIFT transfers can take up to five working days."
+    ],
+    "edge_cases": "Differs from failed_transfer (error occurred) and transfer_not_received_by_recipient (sender believes it completed). Here the transfer is clearly in a pending state.",
+    "commonly_confused_with": [
+      "cancel_transfer",
+      "declined_transfer",
+      "failed_transfer"
+    ]
+  },
+  {
+    "intent_name": "pin_blocked",
+    "definition": "The customer's card PIN has been blocked, typically after too many consecutive incorrect PIN entry attempts.",
+    "example_queries": [
+      "I have exceeded the number of PIN attempts",
+      "I mistook my pin and now I am locked.  Can you unlock me?",
+      "Please help me unblock my pin which I put the wrong one too many times."
+    ],
+    "edge_cases": "Differs from change_pin (wants a new PIN) and passcode_forgotten (app passcode). Focus is on the blocked state requiring unblock, not just resetting.",
+    "commonly_confused_with": [
+      "change_pin",
+      "card_not_working",
+      "atm_support"
+    ]
+  },
+  {
+    "intent_name": "receiving_money",
+    "definition": "The customer wants to know how to receive money into their account, or has a general question about incoming transfers.",
+    "example_queries": [
+      "Can my salary be received here?",
+      "How can my boss pay me directly to the card?",
+      "Salary in GBP has been received. Does it need to be configured into another place?"
+    ],
+    "edge_cases": "Differs from transfer_into_account (customer is doing the sending) and transfer_not_received_by_recipient (a specific transfer has gone missing). This is about how the receiving process works.",
+    "commonly_confused_with": [
+      "wrong_amount_of_cash_received",
+      "transfer_not_received_by_recipient",
+      "transfer_into_account"
+    ]
+  },
+  {
+    "intent_name": "request_refund",
+    "definition": "The customer wants to request a refund for a transaction and believes they are entitled to get their money back.",
+    "example_queries": [
+      "How long does it take to get a refund on something I bought?",
+      "Please tell me how to get a refund for something I bought.",
+      "Can i cancel this purchase?"
+    ],
+    "edge_cases": "Differs from Refund_not_showing_up (refund already requested and expected). Here the customer is initiating the refund request, not chasing one already in progress.",
+    "commonly_confused_with": [
+      "Refund_not_showing_up",
+      "reverted_card_payment?",
+      "declined_card_payment"
+    ]
+  },
+  {
+    "intent_name": "reverted_card_payment?",
+    "definition": "A card payment that was previously processed has been reversed or reverted, and the customer has questions about why this happened or what to expect.",
+    "example_queries": [
+      "I wanted to purchase something online but the payment was returned back to me. This has been going on for a couple of weeks. Please tell me what is going on here?",
+      "I tried to use my debit card, but the payment did not work.",
+      "Hi, I had an issue with my card payment and It shows on my account that my payment went through. Then I got contacted from the seller saying \"they did not receive my payment\" then the payment was returned to my account. so I would like to see why it did that please."
+    ],
+    "edge_cases": "Differs from request_refund (customer-initiated return) and Refund_not_showing_up (refund delayed). Here the reversal was initiated by the merchant or system, not the customer.",
+    "commonly_confused_with": [
+      "declined_card_payment",
+      "card_payment_not_recognised",
+      "pending_card_payment"
+    ]
+  },
+  {
+    "intent_name": "supported_cards_and_currencies",
+    "definition": "The customer wants to know which card networks (Visa, Mastercard) or which currencies are supported by the service.",
+    "example_queries": [
+      "How do I use American express to top up my account?",
+      "Which currencies do you accept for adding money?",
+      "Is my credit card supported for top-ups?"
+    ],
+    "edge_cases": "Broader than visa_or_mastercard (card network only) or fiat_currency_support (currency only). Use this when the query covers both or is general.",
+    "commonly_confused_with": [
+      "fiat_currency_support",
+      "visa_or_mastercard",
+      "card_linking"
+    ]
+  },
+  {
+    "intent_name": "terminate_account",
+    "definition": "The customer wants to permanently close or delete their account and all associated data.",
+    "example_queries": [
+      "How do I deactivate my account?",
+      "Remove my account immediately.",
+      "Are you able to delete my account?"
+    ],
+    "edge_cases": "Not a temporary freeze or suspension. Differs from lost_or_stolen_card (card issue, not account closure). Irreversible action \u2014 clear intent signal required.",
+    "commonly_confused_with": [
+      "cancel_transfer",
+      "transfer_into_account",
+      "cash_withdrawal_charge"
+    ]
+  },
+  {
+    "intent_name": "top_up_by_bank_transfer_charge",
+    "definition": "The customer is asking about or disputing a fee that was charged for topping up their account via bank transfer.",
+    "example_queries": [
+      "Is there a top up fee for transfer?",
+      "Will there be a charge for topping up by account with a SEPA transfer?",
+      "What are the charges for receiving a SEPA transfer?"
+    ],
+    "edge_cases": "Differs from top_up_by_card_charge (card top-up fee) and transfer_fee_charged (outgoing transfer fee). Focus is specifically on the bank transfer top-up method fee.",
+    "commonly_confused_with": [
+      "top_up_by_card_charge",
+      "top_up_by_cash_or_cheque",
+      "transfer_fee_charged"
+    ]
+  },
+  {
+    "intent_name": "top_up_by_card_charge",
+    "definition": "The customer is asking about or disputing a fee charged for topping up their account using a debit or credit card.",
+    "example_queries": [
+      "What is the charge for using a Top up card in the US?",
+      "What is the fee for topping up a US card?",
+      "What fees are charged when I top up"
+    ],
+    "edge_cases": "Differs from top_up_by_bank_transfer_charge (bank transfer method) and topping_up_by_card (the act of topping up, not the fee).",
+    "commonly_confused_with": [
+      "topping_up_by_card",
+      "top_up_by_bank_transfer_charge",
+      "automatic_top_up"
+    ]
+  },
+  {
+    "intent_name": "top_up_by_cash_or_cheque",
+    "definition": "The customer wants to know how to add money to their account using physical cash or a cheque.",
+    "example_queries": [
+      "Help me please, I need to top up cash.",
+      "Do you have any options to top up with a cheque on my account?",
+      "Is there somewhere I can send a check to add to my account?"
+    ],
+    "edge_cases": "Differs from topping_up_by_card (card method) and top_up_by_bank_transfer_charge (bank transfer method). Specific to cash or cheque deposit method.",
+    "commonly_confused_with": [
+      "top_up_by_bank_transfer_charge",
+      "top_up_by_card_charge",
+      "verify_top_up"
+    ]
+  },
+  {
+    "intent_name": "top_up_failed",
+    "definition": "An attempt to add funds to the account failed and the money was not credited.",
+    "example_queries": [
+      "I think my top-up has failed.",
+      "Top-up is not working",
+      "My top up is not working"
+    ],
+    "edge_cases": "Differs from pending_top_up (visible as pending, not failed) and top_up_reverted (succeeded then reversed). The top-up attempt was made and resulted in an error.",
+    "commonly_confused_with": [
+      "top_up_reverted",
+      "verify_top_up",
+      "automatic_top_up"
+    ]
+  },
+  {
+    "intent_name": "top_up_limits",
+    "definition": "The customer is asking about minimum or maximum limits on how much they can top up their account per transaction or per period.",
+    "example_queries": [
+      "What is the max amount of top-ups?",
+      "Are top-ups unlimited?",
+      "Can I increase my top-up maximum?"
+    ],
+    "edge_cases": "Differs from disposable_card_limits (limits on a disposable card) and automatic_top_up (automated rules). Focus is on the cap amounts for funding the account.",
+    "commonly_confused_with": [
+      "top_up_failed",
+      "verify_top_up",
+      "pending_top_up"
+    ]
+  },
+  {
+    "intent_name": "top_up_reverted",
+    "definition": "A top-up that was previously successfully added to the account has been reversed and the funds removed.",
+    "example_queries": [
+      "My top up did not show up as shown and my money has disappeared, can you help me fix this glitch problem?",
+      "Has my top-up been cancelled?",
+      "I topped up recently and saw the money go through, but now it's just gone? What's going on"
+    ],
+    "edge_cases": "Differs from top_up_failed (never succeeded) and pending_top_up (still processing). The money appeared and then was taken back.",
+    "commonly_confused_with": [
+      "top_up_failed",
+      "verify_top_up",
+      "automatic_top_up"
+    ]
+  },
+  {
+    "intent_name": "topping_up_by_card",
+    "definition": "The customer wants to add money to their account using a debit or credit card and has a question about the process.",
+    "example_queries": [
+      "My money I had was gone and I could not get gas!",
+      "i can not see my top up",
+      "I can't see my top up in my wallet!"
+    ],
+    "edge_cases": "Differs from top_up_by_card_charge (asking about the fee, not the process) and automatic_top_up (automated rule). This is about the act of manually topping up via card.",
+    "commonly_confused_with": [
+      "top_up_by_card_charge",
+      "card_arrival",
+      "card_swallowed"
+    ]
+  },
+  {
+    "intent_name": "transaction_charged_twice",
+    "definition": "The customer was charged twice for the same transaction, resulting in a duplicate debit.",
+    "example_queries": [
+      "A transaction shows duplicate times.",
+      "There is a repeat charge for the same item",
+      "How can I fix this?  There is a double charge on my account."
+    ],
+    "edge_cases": "Differs from card_payment_not_recognised (unknown charge) and extra_charge_on_statement (unknown extra). Here the customer recognises both charges as the same transaction duplicated.",
+    "commonly_confused_with": [
+      "extra_charge_on_statement",
+      "transfer_fee_charged",
+      "card_payment_fee_charged"
+    ]
+  },
+  {
+    "intent_name": "transfer_fee_charged",
+    "definition": "The customer was charged a fee for sending an outbound transfer and wants an explanation or dispute of that fee.",
+    "example_queries": [
+      "I was transferring some money to a friend, which I thought would be free, but I see there is a charge.  What's up with that?",
+      "There is a fee for a transfer, please explain that to me.",
+      "I didn't know there was a charge for tranferring. What is the charge?"
+    ],
+    "edge_cases": "Differs from top_up_by_bank_transfer_charge (incoming top-up fee) and exchange_charge (currency conversion fee). Focus is on outgoing transfer fees.",
+    "commonly_confused_with": [
+      "card_payment_fee_charged",
+      "exchange_charge",
+      "pending_transfer"
+    ]
+  },
+  {
+    "intent_name": "transfer_into_account",
+    "definition": "The customer wants to transfer money into their account from an external bank and has a question about how to do it.",
+    "example_queries": [
+      "I want to transfer money. How do I do that for my account?",
+      "How do I transfer money into my account?",
+      "How can I link my bank to my top up account?"
+    ],
+    "edge_cases": "Differs from receiving_money (general incoming money questions) and pending_top_up (a top-up already in progress). This is about the mechanics of sending to the account.",
+    "commonly_confused_with": [
+      "transfer_fee_charged",
+      "cancel_transfer",
+      "top_up_by_bank_transfer_charge"
+    ]
+  },
+  {
+    "intent_name": "transfer_not_received_by_recipient",
+    "definition": "The customer sent a transfer that appeared to complete on their end, but the recipient has not received the funds.",
+    "example_queries": [
+      "I am worried that too much time has gone by for a transfer to be completed.",
+      "What is the time frame that it usually takes for a transfer to come through? I have a friend needing it immediately but it has yet to come through.",
+      "My money transaction can't be seen by the person I sent it to"
+    ],
+    "edge_cases": "Differs from pending_transfer (clearly still pending) and failed_transfer (error shown). Here the sender's account shows the money left but the recipient sees nothing.",
+    "commonly_confused_with": [
+      "failed_transfer",
+      "declined_transfer",
+      "cancel_transfer"
+    ]
+  },
+  {
+    "intent_name": "transfer_timing",
+    "definition": "The customer wants to know how long a transfer will take to be processed, sent, or received by the recipient.",
+    "example_queries": [
+      "How long am I to wait before the transfer gets to my account?",
+      "Will the transfer show up in my account soon?",
+      "What time will a transfer from the US take?"
+    ],
+    "edge_cases": "Differs from pending_transfer (a specific transfer is pending) and transfer_not_received_by_recipient (transfer seems lost). This is an informational query about expected timing.",
+    "commonly_confused_with": [
+      "pending_transfer",
+      "cancel_transfer",
+      "transfer_not_received_by_recipient"
+    ]
+  },
+  {
+    "intent_name": "unable_to_verify_identity",
+    "definition": "The customer is experiencing technical or procedural difficulty completing the required identity verification (KYC) process in the app.",
+    "example_queries": [
+      "Can you help me with proving my identity?",
+      "What proof do you need for my identification?",
+      "Are there any reasons that my identity wouldn't be accepted even though everything I've provided is factual?"
+    ],
+    "edge_cases": "Differs from verify_my_identity (wants to know how) and why_verify_identity (asking why it's required). The customer is actively trying and failing to verify.",
+    "commonly_confused_with": [
+      "verify_my_identity",
+      "why_verify_identity",
+      "verify_source_of_funds"
+    ]
+  },
+  {
+    "intent_name": "verify_my_identity",
+    "definition": "The customer needs to complete an identity verification step required by the app and is asking how to do it.",
+    "example_queries": [
+      "What do you require for identity verification?",
+      "How can I prove I am me?",
+      "I need to verify my identity. How do I do that?"
+    ],
+    "edge_cases": "Differs from unable_to_verify_identity (trying and failing) and why_verify_identity (questioning the requirement). Here the customer is willing and looking for instructions.",
+    "commonly_confused_with": [
+      "unable_to_verify_identity",
+      "why_verify_identity",
+      "verify_source_of_funds"
+    ]
+  },
+  {
+    "intent_name": "verify_source_of_funds",
+    "definition": "The customer has been asked by the app to prove where their funds come from as part of a compliance or anti-money-laundering check.",
+    "example_queries": [
+      "where exactly does money come from",
+      "Where did my money come from?",
+      "Can I check to see where the funds came from?"
+    ],
+    "edge_cases": "Distinct from verify_my_identity (personal ID check). This is specifically about documenting the origin of deposited or transferred funds.",
+    "commonly_confused_with": [
+      "receiving_money",
+      "verify_my_identity",
+      "unable_to_verify_identity"
+    ]
+  },
+  {
+    "intent_name": "verify_top_up",
+    "definition": "The customer needs to verify or confirm a specific top-up transaction, typically as part of a security or compliance check.",
+    "example_queries": [
+      "Do you know how I can verify that I did a top-up to my card?",
+      "where is the code for verifying the top up card?",
+      "The top-up card is verified how?"
+    ],
+    "edge_cases": "Differs from verify_source_of_funds (broader AML check) and pending_top_up (waiting for funds). Specific to confirming a top-up event.",
+    "commonly_confused_with": [
+      "top_up_failed",
+      "automatic_top_up",
+      "top_up_reverted"
+    ]
+  },
+  {
+    "intent_name": "virtual_card_not_working",
+    "definition": "The customer's virtual card is not functioning for online payments or in-app purchases.",
+    "example_queries": [
+      "Why isn't my disposable virtual card working?",
+      "Can I use my virtual card to complete transactions for memberships?",
+      "Why won't my virtual card work?"
+    ],
+    "edge_cases": "Differs from card_not_working (physical card) and getting_virtual_card (requesting one). The virtual card exists but is malfunctioning.",
+    "commonly_confused_with": [
+      "getting_virtual_card",
+      "card_not_working",
+      "get_disposable_virtual_card"
+    ]
+  },
+  {
+    "intent_name": "visa_or_mastercard",
+    "definition": "The customer wants to know whether their card is issued on the Visa or Mastercard network, or is asking about differences between the two.",
+    "example_queries": [
+      "Is there a way I can have a mastercard?",
+      "is it just visa or can i also use mastercard?",
+      "I do not want a VISA card."
+    ],
+    "edge_cases": "Differs from supported_cards_and_currencies (broader). Use when the query is specifically about which network a card is on.",
+    "commonly_confused_with": [
+      "card_acceptance",
+      "supported_cards_and_currencies",
+      "order_physical_card"
+    ]
+  },
+  {
+    "intent_name": "why_verify_identity",
+    "definition": "The customer is questioning or challenging the reason they are being asked to verify their identity.",
+    "example_queries": [
+      "Why do you have an identity check?",
+      "I do not feel comfortable verifying my identity.",
+      "Why on earth do you need so much personal id info from me?"
+    ],
+    "edge_cases": "Differs from verify_my_identity (willing to verify, wants instructions) and unable_to_verify_identity (trying but failing). The customer is asking WHY, not how.",
+    "commonly_confused_with": [
+      "unable_to_verify_identity",
+      "verify_my_identity",
+      "verify_source_of_funds"
+    ]
+  },
+  {
+    "intent_name": "wrong_amount_of_cash_received",
+    "definition": "The customer received a different (usually lesser) amount of cash from an ATM than they requested.",
+    "example_queries": [
+      "Why did I only receive a partial amount of what I tried to withdraw?",
+      "my atm transaction was wrong",
+      "why did i only get 20.00"
+    ],
+    "edge_cases": "Differs from cash_withdrawal_not_recognised (doesn't recognise the withdrawal at all). Here the customer made the withdrawal but the amount dispensed was wrong.",
+    "commonly_confused_with": [
+      "cash_withdrawal_not_recognised",
+      "wrong_exchange_rate_for_cash_withdrawal",
+      "receiving_money"
+    ]
+  },
+  {
+    "intent_name": "wrong_exchange_rate_for_cash_withdrawal",
+    "definition": "An incorrect or unexpected exchange rate was applied to a cash withdrawal made in a foreign currency.",
+    "example_queries": [
+      "The wrong exchange rate was applied to me while pulling out cash.",
+      "I got less cash because of the exchange rate.",
+      "Why is the fee for taking money out so high?  I feel I was overcharged and I would have never used this ATM if I would have known ahead of time."
+    ],
+    "edge_cases": "Differs from card_payment_wrong_exchange_rate (card purchase, not ATM cash) and exchange_rate (asking what the rate is). Specific to ATM cash withdrawal rate disputes.",
+    "commonly_confused_with": [
+      "card_payment_wrong_exchange_rate",
+      "cash_withdrawal_not_recognised",
+      "cash_withdrawal_charge"
+    ]
+  }
+]
