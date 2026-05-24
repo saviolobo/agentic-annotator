@@ -1,0 +1,6 @@
+{
+  "query_id": "test_01110",
+  "text": "I see a charge on my account that I don't recall making. I feel like my account may have been compromised.",
+  "true_intent": "card_payment_not_recognised",
+  "difficulty": "ambiguous"
+}

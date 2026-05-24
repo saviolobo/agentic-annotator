@@ -1,0 +1,6 @@
+{
+  "query_id": "test_01203",
+  "text": "I am having trouble verifying my identity.",
+  "true_intent": "unable_to_verify_identity",
+  "difficulty": "ambiguous"
+}

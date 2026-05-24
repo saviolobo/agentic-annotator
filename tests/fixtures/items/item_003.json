@@ -1,0 +1,6 @@
+{
+  "query_id": "test_01901",
+  "text": "Can you delete my account please?",
+  "true_intent": "terminate_account",
+  "difficulty": "simple"
+}

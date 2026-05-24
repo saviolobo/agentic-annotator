@@ -1,0 +1,6 @@
+{
+  "query_id": "test_01784",
+  "text": "I requested a refund from a store but it hasn't arrived.",
+  "true_intent": "Refund_not_showing_up",
+  "difficulty": "ambiguous"
+}

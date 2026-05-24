@@ -1,0 +1,6 @@
+{
+  "query_id": "test_01170",
+  "text": "I would like to not have to do the identity verification.",
+  "true_intent": "why_verify_identity",
+  "difficulty": "ambiguous"
+}

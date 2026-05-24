@@ -1,0 +1,6 @@
+{
+  "query_id": "test_00468",
+  "text": "My card got lost.",
+  "true_intent": "lost_or_stolen_card",
+  "difficulty": "simple"
+}

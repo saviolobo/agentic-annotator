@@ -1,0 +1,6 @@
+{
+  "query_id": "test_01938",
+  "text": "What do I do if the ATM ate my card?",
+  "true_intent": "card_swallowed",
+  "difficulty": "simple"
+}

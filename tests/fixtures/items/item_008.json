@@ -1,0 +1,6 @@
+{
+  "query_id": "test_01879",
+  "text": "How long does it take for a money transfer to show?",
+  "true_intent": "pending_transfer",
+  "difficulty": "ambiguous"
+}

@@ -1,0 +1,6 @@
+{
+  "query_id": "test_02441",
+  "text": "How do I top-up using cash?",
+  "true_intent": "top_up_by_cash_or_cheque",
+  "difficulty": "simple"
+}
