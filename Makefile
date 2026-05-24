@@ -15,4 +15,4 @@ format:
 	uv run ruff check --fix .
 
 eval-smoke:
-	uv run python eval/run_eval.py --smoke --n 10
+	uv run python -m eval.run_eval --smoke --n 10

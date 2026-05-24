@@ -59,10 +59,15 @@ class AnnotatorOutput(BaseModel):
         return v
 
 
-def build_annotation_context(query: str) -> str:
+def build_annotation_context(query: str, use_mcp: bool = True) -> str:
     """Build the shared user prompt used by Primary and Validator agents."""
     valid = list_valid_intents()
     intent_list = "\n".join(f"- {e['intent_name']}" for e in valid)
+
+    if not use_mcp:
+        return (
+            f"Customer query: {query}\n\nValid intent labels (choose exactly one):\n{intent_list}"
+        )
 
     similar = search_similar_examples(query, k=5)
     examples_block = "\n".join(f'  "{ex["text"]}" → {ex["intent_name"]}' for ex in similar)
@@ -109,9 +114,9 @@ def _get_client() -> Cerebras:
     wait=wait_exponential(multiplier=1, min=2, max=30),
     stop=stop_after_attempt(3),
 )
-def annotate(query: str) -> AnnotatorOutput:
+def annotate(query: str, use_mcp: bool = True) -> AnnotatorOutput:
     """Assign an intent label to a banking customer query."""
-    user_prompt = build_annotation_context(query)
+    user_prompt = build_annotation_context(query, use_mcp=use_mcp)
     response = _get_client().chat.completions.create(
         model="qwen-3-235b-a22b-instruct-2507",
         messages=[

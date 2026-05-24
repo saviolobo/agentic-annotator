@@ -54,13 +54,13 @@ def _get_client() -> Cerebras:
     wait=wait_exponential(multiplier=1, min=2, max=30),
     stop=stop_after_attempt(3),
 )
-def validate(query: str) -> AnnotatorOutput:
+def validate(query: str, use_mcp: bool = True) -> AnnotatorOutput:
     """Independently assign an intent label — blind to any prior annotation."""
     response = _get_client().chat.completions.create(
         model="qwen-3-235b-a22b-instruct-2507",
         messages=[
             {"role": "system", "content": _SYSTEM},
-            {"role": "user", "content": build_annotation_context(query)},
+            {"role": "user", "content": build_annotation_context(query, use_mcp=use_mcp)},
         ],
         response_format={"type": "json_object"},
         temperature=0,
