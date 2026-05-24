@@ -13,7 +13,7 @@ dependencies = [
     "sentence-transformers",
     "fastapi",
     "uvicorn",
-    "datasets",
+    "datasets<4.0.0",
     "pandas",
     "pyarrow",
     "scikit-learn",
