@@ -31,6 +31,7 @@ requires_redis = pytest.mark.skipif(
 
 # --- JSON-backed tools (always run) ---
 
+
 def test_get_guidelines_known_intent() -> None:
     result = get_guidelines_for_intent("card_arrival")
     assert result["intent_name"] == "card_arrival"
@@ -57,6 +58,7 @@ def test_get_edge_cases_unknown_intent() -> None:
 
 
 # --- Redis-backed tool ---
+
 
 @requires_redis
 def test_search_similar_examples_returns_k_results() -> None:

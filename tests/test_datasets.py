@@ -12,6 +12,7 @@ SPLITS_DIR = Path(__file__).parent.parent / "data" / "splits"
 @pytest.fixture(scope="module")
 def splits() -> dict[str, pd.DataFrame]:
     from eval.datasets import build_splits
+
     return build_splits(seed=42, holdout_n=500)
 
 

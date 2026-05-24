@@ -78,8 +78,9 @@ def test_output_structure() -> None:
 @requires_cerebras
 def test_invalid_label_raises() -> None:
     """Validator rejects labels not in the Banking77 taxonomy."""
-    from agents.primary_annotator import AnnotatorOutput
     import pydantic
+
+    from agents.primary_annotator import AnnotatorOutput
 
     with pytest.raises(pydantic.ValidationError):
         AnnotatorOutput(

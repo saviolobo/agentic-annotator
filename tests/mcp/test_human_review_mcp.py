@@ -50,9 +50,12 @@ def test_completed_reviews_empty_when_none_done() -> None:
 def test_completed_reviews_returned_after_manual_update(tmp_path, monkeypatch) -> None:
     """Simulate a human marking an item complete directly in SQLite."""
     import os
+
     db_path = os.environ["HUMAN_REVIEW_DB_PATH"]
 
-    add_to_review_queue("q1", "My card got lost.", "low confidence", {"primary": "lost_or_stolen_card"})
+    add_to_review_queue(
+        "q1", "My card got lost.", "low confidence", {"primary": "lost_or_stolen_card"}
+    )
 
     # Simulate a human reviewer marking it complete
     conn = sqlite3.connect(db_path)
@@ -73,6 +76,7 @@ def test_completed_reviews_returned_after_manual_update(tmp_path, monkeypatch) -
 
 def test_agent_outputs_stored_as_json(tmp_path, monkeypatch) -> None:
     import os
+
     db_path = os.environ["HUMAN_REVIEW_DB_PATH"]
     outputs = {"primary": "card_arrival", "validator": "card_delivery_estimate", "confidence": 0.42}
 

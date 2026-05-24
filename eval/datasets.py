@@ -50,9 +50,7 @@ def build_splits(seed: int = 42, holdout_n: int = 500) -> dict[str, pd.DataFrame
     SPLITS_DIR.mkdir(parents=True, exist_ok=True)
     train_df.to_parquet(SPLITS_DIR / "train.parquet", index=False)
     holdout_df.to_parquet(SPLITS_DIR / "holdout.parquet", index=False)
-    (SPLITS_DIR / "holdout_indices.json").write_text(
-        json.dumps(holdout_idx_sorted, indent=2)
-    )
+    (SPLITS_DIR / "holdout_indices.json").write_text(json.dumps(holdout_idx_sorted, indent=2))
 
     print(f"train:   {len(train_df):,} rows → data/splits/train.parquet")
     print(f"holdout: {len(holdout_df):,} rows → data/splits/holdout.parquet")

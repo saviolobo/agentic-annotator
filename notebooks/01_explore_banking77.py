@@ -53,8 +53,10 @@ def main() -> None:
     print("Intent distribution — train split (are intents balanced?)")
     print("=" * 60)
     counts = train[label_col].value_counts()
-    print(f"  Min count: {counts.min()}  Max count: {counts.max()}  "
-          f"Mean: {counts.mean():.1f}  Std: {counts.std():.1f}")
+    print(
+        f"  Min count: {counts.min()}  Max count: {counts.max()}  "
+        f"Mean: {counts.mean():.1f}  Std: {counts.std():.1f}"
+    )
     print("\n  Top 5 most frequent:")
     for intent, cnt in counts.head(5).items():
         print(f"    {intent:<50} {cnt}")

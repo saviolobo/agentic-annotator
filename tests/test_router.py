@@ -9,9 +9,7 @@ from pathlib import Path
 
 import pytest
 
-requires_groq = pytest.mark.skipif(
-    not os.getenv("GROQ_API_KEY"), reason="GROQ_API_KEY not set"
-)
+requires_groq = pytest.mark.skipif(not os.getenv("GROQ_API_KEY"), reason="GROQ_API_KEY not set")
 
 FIXTURES_DIR = Path(__file__).parent / "fixtures" / "items"
 
@@ -36,8 +34,7 @@ def test_simple_items_route_to_simple(item: dict) -> None:
 
     decision = route(item["text"])
     assert decision.route == "SIMPLE", (
-        f"Expected SIMPLE for '{item['text']}'\n"
-        f"Got {decision.route}: {decision.reasoning}"
+        f"Expected SIMPLE for '{item['text']}'\nGot {decision.route}: {decision.reasoning}"
     )
     assert 0.0 <= decision.confidence <= 1.0
 
@@ -49,8 +46,7 @@ def test_ambiguous_items_route_to_complex(item: dict) -> None:
 
     decision = route(item["text"])
     assert decision.route == "COMPLEX", (
-        f"Expected COMPLEX for '{item['text']}'\n"
-        f"Got {decision.route}: {decision.reasoning}"
+        f"Expected COMPLEX for '{item['text']}'\nGot {decision.route}: {decision.reasoning}"
     )
     assert 0.0 <= decision.confidence <= 1.0
 

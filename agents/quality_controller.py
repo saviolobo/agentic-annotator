@@ -80,11 +80,7 @@ def _build_prompt(query: str, label: str, batch_stats: dict[str, int]) -> str:
         if drift_alerts
         else "Drift alerts: none"
     )
-    return (
-        f"Query: {query}\n"
-        f"Assigned label: {label}\n\n"
-        f"{drift_section}"
-    )
+    return f"Query: {query}\nAssigned label: {label}\n\n{drift_section}"
 
 
 @retry(

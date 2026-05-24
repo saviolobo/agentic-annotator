@@ -65,9 +65,7 @@ def build_annotation_context(query: str) -> str:
     intent_list = "\n".join(f"- {e['intent_name']}" for e in valid)
 
     similar = search_similar_examples(query, k=5)
-    examples_block = "\n".join(
-        f'  "{ex["text"]}" → {ex["intent_name"]}' for ex in similar
-    )
+    examples_block = "\n".join(f'  "{ex["text"]}" → {ex["intent_name"]}' for ex in similar)
 
     # Guidelines for top-3 unique intents from similar examples
     seen: list[str] = []

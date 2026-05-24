@@ -376,13 +376,15 @@ def main() -> None:
         if meta is None:
             missing_meta.append(intent)
             continue
-        guidelines.append({
-            "intent_name": intent,
-            "definition": meta["definition"],
-            "example_queries": examples_by_intent.get(intent, []),
-            "edge_cases": meta["edge_cases"],
-            "commonly_confused_with": confusion[intent],
-        })
+        guidelines.append(
+            {
+                "intent_name": intent,
+                "definition": meta["definition"],
+                "example_queries": examples_by_intent.get(intent, []),
+                "edge_cases": meta["edge_cases"],
+                "commonly_confused_with": confusion[intent],
+            }
+        )
 
     if missing_meta:
         raise ValueError(f"Missing metadata for: {missing_meta}")

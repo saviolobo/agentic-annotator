@@ -9,7 +9,7 @@ Tools:
 import json
 import os
 import sqlite3
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 from fastmcp import FastMCP
@@ -54,7 +54,7 @@ def add_to_review_queue(
     agent_outputs: dict,
 ) -> dict:
     """Enqueue an annotation item for human review."""
-    now = datetime.now(timezone.utc).isoformat()
+    now = datetime.now(UTC).isoformat()
     with _conn() as conn:
         cur = conn.execute(
             """INSERT INTO review_queue (query_id, text, reason, agent_outputs, created_at)

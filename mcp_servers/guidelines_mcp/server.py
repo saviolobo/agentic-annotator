@@ -71,10 +71,7 @@ def get_guidelines_for_intent(intent_name: str) -> dict:
 def search_similar_examples(query_text: str, k: int = 5) -> list[dict]:
     """Return k training examples semantically closest to query_text."""
     vec = (
-        _model_instance()
-        .encode(query_text, normalize_embeddings=True)
-        .astype(np.float32)
-        .tobytes()
+        _model_instance().encode(query_text, normalize_embeddings=True).astype(np.float32).tobytes()
     )
     q = (
         Query(f"*=>[KNN {k} @embedding $vec AS score]")
@@ -87,9 +84,7 @@ def search_similar_examples(query_text: str, k: int = 5) -> list[dict]:
         {
             "text": doc.text.decode() if isinstance(doc.text, bytes) else doc.text,
             "intent_name": (
-                doc.intent_name.decode()
-                if isinstance(doc.intent_name, bytes)
-                else doc.intent_name
+                doc.intent_name.decode() if isinstance(doc.intent_name, bytes) else doc.intent_name
             ),
             "score": float(doc.score),
         }

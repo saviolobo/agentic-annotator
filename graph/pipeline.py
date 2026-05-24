@@ -31,6 +31,7 @@ from .state import AnnotationState
 
 # ---------- nodes ----------
 
+
 def route_node(state: AnnotationState) -> dict:
     decision = router_route(state["query"])
     return {"route": decision.route}
@@ -96,6 +97,7 @@ def human_review_node(state: AnnotationState) -> dict:
 
 # ---------- routing functions ----------
 
+
 def dispatch_by_route(state: AnnotationState) -> list[Send] | str:
     if state.get("route") == "SIMPLE":
         return "run_primary"
@@ -111,6 +113,7 @@ def route_after_arbitration(state: AnnotationState) -> str:
 
 
 # ---------- build ----------
+
 
 def build_pipeline(checkpointer=None):
     """Compile the annotation pipeline.

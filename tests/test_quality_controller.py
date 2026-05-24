@@ -7,9 +7,7 @@ import os
 
 import pytest
 
-requires_groq = pytest.mark.skipif(
-    not os.getenv("GROQ_API_KEY"), reason="GROQ_API_KEY not set"
-)
+requires_groq = pytest.mark.skipif(not os.getenv("GROQ_API_KEY"), reason="GROQ_API_KEY not set")
 
 
 @requires_groq
@@ -36,8 +34,7 @@ def test_qc_flags_obvious_label_mismatch() -> None:
         batch_stats={"transfer_timing": 2, "change_pin": 3},
     )
     assert result.approved is False, (
-        f"Expected QC to reject 'transfer_timing' for PIN-change query, "
-        f"flags={result.flags}"
+        f"Expected QC to reject 'transfer_timing' for PIN-change query, flags={result.flags}"
     )
     assert len(result.flags) > 0
 
@@ -57,8 +54,7 @@ def test_qc_detects_label_drift() -> None:
     )
     # Drift should lower quality score and/or add a flag, even if item is approved
     assert result.batch_quality_score < 0.85 or len(result.flags) > 0, (
-        f"Expected drift to be flagged: score={result.batch_quality_score}, "
-        f"flags={result.flags}"
+        f"Expected drift to be flagged: score={result.batch_quality_score}, flags={result.flags}"
     )
 
 

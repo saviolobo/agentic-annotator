@@ -59,12 +59,8 @@ def test_pipeline_simple_path_skips_validator() -> None:
         {"query_id": "test_simple", "query": "My card got lost.", "batch_stats": {}}
     )
 
-    assert result.get("route") == "SIMPLE", (
-        f"Expected SIMPLE route, got {result.get('route')}"
-    )
-    assert result.get("validator_output") is None, (
-        "Validator should not run on a SIMPLE item"
-    )
+    assert result.get("route") == "SIMPLE", f"Expected SIMPLE route, got {result.get('route')}"
+    assert result.get("validator_output") is None, "Validator should not run on a SIMPLE item"
     assert result.get("final_label") == "lost_or_stolen_card", (
         f"Expected lost_or_stolen_card, got {result.get('final_label')}"
     )

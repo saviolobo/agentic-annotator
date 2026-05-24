@@ -16,11 +16,13 @@ requires_cerebras = pytest.mark.skipif(
 
 
 def _make_output(label: str, confidence: float, reasoning: str) -> AnnotatorOutput:
-    return AnnotatorOutput(label=label, confidence=confidence,
-                           reasoning=reasoning, evidence="synthetic")
+    return AnnotatorOutput(
+        label=label, confidence=confidence, reasoning=reasoning, evidence="synthetic"
+    )
 
 
 # --- Synthetic disagreement scenarios ---
+
 
 @requires_cerebras
 def test_arbitrator_picks_correct_label_on_clear_disagreement() -> None:
@@ -29,12 +31,12 @@ def test_arbitrator_picks_correct_label_on_clear_disagreement() -> None:
 
     query = "I am having trouble verifying my identity."
     primary = _make_output(
-        "unable_to_verify_identity", 0.75,
-        "Customer says they are having trouble, which implies a technical difficulty."
+        "unable_to_verify_identity",
+        0.75,
+        "Customer says they are having trouble, which implies a technical difficulty.",
     )
     validator = _make_output(
-        "verify_my_identity", 0.65,
-        "Customer is asking about the identity verification process."
+        "verify_my_identity", 0.65, "Customer is asking about the identity verification process."
     )
 
     result = arbitrate(query, primary, validator)
@@ -55,13 +57,9 @@ def test_arbitrator_resolves_refund_boundary() -> None:
 
     query = "I requested a refund from a store but it hasn't arrived."
     primary = _make_output(
-        "Refund_not_showing_up", 0.72,
-        "The refund was already requested and is not showing up."
+        "Refund_not_showing_up", 0.72, "The refund was already requested and is not showing up."
     )
-    validator = _make_output(
-        "request_refund", 0.68,
-        "Customer wants a refund from a store."
-    )
+    validator = _make_output("request_refund", 0.68, "Customer wants a refund from a store.")
 
     result = arbitrate(query, primary, validator)
     assert result.final_label in ("Refund_not_showing_up", "request_refund")
@@ -79,7 +77,9 @@ def test_arbitrator_routes_to_human_on_low_confidence() -> None:
     # Deeply ambiguous query with conflicting weak signals
     query = "There is an issue with my account that I need help with."
     primary = _make_output("card_not_working", 0.40, "Possible card issue.")
-    validator = _make_output("balance_not_updated_after_bank_transfer", 0.35, "Could be balance issue.")
+    validator = _make_output(
+        "balance_not_updated_after_bank_transfer", 0.35, "Could be balance issue."
+    )
 
     result = arbitrate(query, primary, validator)
     assert result.route_to_human is True or result.confidence < CONFIDENCE_THRESHOLD, (

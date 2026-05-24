@@ -11,7 +11,9 @@ from pathlib import Path
 
 from fastmcp import FastMCP
 
-_GUIDELINES_PATH = Path(__file__).parent.parent.parent / "data" / "guidelines" / "intent_guidelines.json"
+_GUIDELINES_PATH = (
+    Path(__file__).parent.parent.parent / "data" / "guidelines" / "intent_guidelines.json"
+)
 
 
 def _load() -> list[dict]:
@@ -24,10 +26,7 @@ mcp = FastMCP("label-schema-mcp")
 @mcp.tool()
 def list_valid_intents() -> list[dict[str, str]]:
     """Return all 77 valid intent names with one-line definitions."""
-    return [
-        {"intent_name": g["intent_name"], "definition": g["definition"]}
-        for g in _load()
-    ]
+    return [{"intent_name": g["intent_name"], "definition": g["definition"]} for g in _load()]
 
 
 @mcp.tool()
