@@ -91,6 +91,5 @@ def print_comparison(summaries: list[EvalSummary]) -> None:
     print()
     print("Reference baselines:")
     print("  JP Morgan MAFA (AAAI 2026)   86.0%  agreement")
-    print("  Best supervised ML           87.35% Macro-F1")
     print("  Manual annotation cost       ~$0.15/item")
     print()

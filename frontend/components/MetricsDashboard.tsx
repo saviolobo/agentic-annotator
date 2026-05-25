@@ -15,7 +15,6 @@ import { getEvalResults, type EvalSummary } from "@/lib/api";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const MAFA_REFERENCE = 86.0;
-const ML_REFERENCE = 87.35;
 
 function shortName(name: string) {
   if (name.includes("Single")) return "Single LLM";
@@ -89,10 +88,6 @@ export function MetricsDashboard() {
             <span className="flex items-center gap-1">
               <span className="inline-block w-6 border-t-2 border-dashed border-orange-500" />
               MAFA (AAAI 2026) {MAFA_REFERENCE}%
-            </span>
-            <span className="flex items-center gap-1">
-              <span className="inline-block w-6 border-t-2 border-dashed border-purple-500" />
-              Best supervised ML {ML_REFERENCE}%
             </span>
           </div>
         </CardContent>
