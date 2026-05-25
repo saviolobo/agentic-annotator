@@ -27,21 +27,38 @@ class EvalSummary:
     total_elapsed_seconds: float
 
 
+_ERROR_SENTINELS = {"__error__", "__none__", "__invalid__"}
+
+
 def compute_summary(
     config_name: str,
     results: list[EvalResult],
     total_elapsed: float,
 ) -> EvalSummary:
-    n = len(results)
-    if n == 0:
+    n_total = len(results)
+    if n_total == 0:
         raise ValueError("No results to summarize")
 
-    human_count = sum(1 for r in results if r.route_to_human)
-    correct = sum(1 for r in results if not r.route_to_human and r.predicted_label == r.true_label)
+    # Exclude API/network errors from accuracy metrics
+    valid = [r for r in results if r.predicted_label not in _ERROR_SENTINELS]
+    n = len(valid)
 
-    # Human-routed items use a sentinel that won't match any true label
-    preds = ["__human__" if r.route_to_human else r.predicted_label for r in results]
-    trues = [r.true_label for r in results]
+    if n == 0:
+        return EvalSummary(
+            config_name=config_name,
+            n_items=n_total,
+            agreement_rate=0.0,
+            macro_f1=0.0,
+            human_review_rate=0.0,
+            items_per_hour=n_total / total_elapsed * 3600 if total_elapsed > 0 else 0.0,
+            total_elapsed_seconds=total_elapsed,
+        )
+
+    human_count = sum(1 for r in valid if r.route_to_human)
+    correct = sum(1 for r in valid if not r.route_to_human and r.predicted_label == r.true_label)
+
+    preds = ["__human__" if r.route_to_human else r.predicted_label for r in valid]
+    trues = [r.true_label for r in valid]
     mf1 = float(f1_score(trues, preds, average="macro", zero_division=0))
 
     return EvalSummary(
@@ -50,7 +67,7 @@ def compute_summary(
         agreement_rate=correct / n,
         macro_f1=mf1,
         human_review_rate=human_count / n,
-        items_per_hour=n / total_elapsed * 3600 if total_elapsed > 0 else 0.0,
+        items_per_hour=n_total / total_elapsed * 3600 if total_elapsed > 0 else 0.0,
         total_elapsed_seconds=total_elapsed,
     )
 

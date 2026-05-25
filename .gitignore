@@ -219,3 +219,5 @@ __marimo__/
 volumes/
 .langfuse/
 data/raw/
+eval_results*.json
+eval/*_ckpt_*.jsonl

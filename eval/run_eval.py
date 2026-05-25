@@ -126,25 +126,34 @@ def _run_config2(items: list[dict]) -> tuple[list, float]:
     t_start = time.perf_counter()
 
     for i, item in enumerate(items, 1):
+        if i > 1:
+            time.sleep(3)  # avoid Cerebras rate limits between items
         print(f"  [2/{len(items)}→{i}] {item['query_id']}", end=" ", flush=True)
         t0 = time.perf_counter()
         query = item["text"]
 
-        route_decision = router_route(query)
-        primary = annotate(query, use_mcp=False)
-        final_label = primary.label
-        route_to_human = False
+        try:
+            route_decision = router_route(query)
+            primary = annotate(query, use_mcp=False)
+            final_label = primary.label
+            route_to_human = False
 
-        if route_decision.route == "COMPLEX":
-            validator = validate(query, use_mcp=False)
-            if not agrees_with(validator, primary.label):
-                arb = arbitrate(query, primary, validator)
-                final_label = arb.final_label
-                route_to_human = arb.confidence < CONFIDENCE_THRESHOLD
+            if route_decision.route == "COMPLEX":
+                validator = validate(query, use_mcp=False)
+                if not agrees_with(validator, primary.label):
+                    arb = arbitrate(query, primary, validator)
+                    final_label = arb.final_label
+                    route_to_human = arb.confidence < CONFIDENCE_THRESHOLD
 
-        elapsed = time.perf_counter() - t0
-        status = "→human" if route_to_human else f"→ {final_label}"
-        print(f"{route_decision.route} {status} ({elapsed:.1f}s)")
+            elapsed = time.perf_counter() - t0
+            status = "→human" if route_to_human else f"→ {final_label}"
+            print(f"{route_decision.route} {status} ({elapsed:.1f}s)")
+        except Exception as exc:
+            elapsed = time.perf_counter() - t0
+            print(f"[ERROR: {exc}] ({elapsed:.1f}s)")
+            final_label = "__error__"
+            route_to_human = False
+
         results.append(
             EvalResult(
                 query_id=item["query_id"],
@@ -170,20 +179,29 @@ def _run_config3(items: list[dict]) -> tuple[list, float]:
     t_start = time.perf_counter()
 
     for i, item in enumerate(items, 1):
+        if i > 1:
+            time.sleep(10)  # avoid Cerebras rate limits between items
         print(f"  [3/{len(items)}→{i}] {item['query_id']}", end=" ", flush=True)
         t0 = time.perf_counter()
-        state = pipeline.invoke(
-            {
-                "query_id": item["query_id"],
-                "query": item["text"],
-                "batch_stats": {},
-            }
-        )
-        elapsed = time.perf_counter() - t0
-        final_label = state.get("final_label", "__none__")
-        route_to_human = bool(state.get("route_to_human"))
-        status = "→human" if route_to_human else f"→ {final_label}"
-        print(f"{state.get('route', '?')} {status} ({elapsed:.1f}s)")
+        try:
+            state = pipeline.invoke(
+                {
+                    "query_id": item["query_id"],
+                    "query": item["text"],
+                    "batch_stats": {},
+                }
+            )
+            elapsed = time.perf_counter() - t0
+            final_label = state.get("final_label", "__none__")
+            route_to_human = bool(state.get("route_to_human"))
+            status = "→human" if route_to_human else f"→ {final_label}"
+            print(f"{state.get('route', '?')} {status} ({elapsed:.1f}s)")
+        except Exception as exc:
+            elapsed = time.perf_counter() - t0
+            print(f"[ERROR: {exc}] ({elapsed:.1f}s)")
+            final_label = "__error__"
+            route_to_human = False
+
         results.append(
             EvalResult(
                 query_id=item["query_id"],
@@ -240,7 +258,14 @@ def main() -> None:
 
     from eval.evaluators import compute_summary, print_comparison
 
-    all_results: dict[str, list] = {}
+    out_path = Path(args.output) if args.output else None
+
+    # Load existing results so we can merge, not overwrite
+    existing: dict = {}
+    if out_path and out_path.exists():
+        existing = json.loads(out_path.read_text())
+
+    all_results: dict[str, list] = existing.get("per_config_results", {})
     all_summaries = []
 
     for cfg in args.configs:
@@ -250,10 +275,18 @@ def main() -> None:
         all_results[cfg] = [vars(r) for r in results]
         all_summaries.append(summary)
 
+    # Rebuild summaries for all configs present in the file
+    from eval.evaluators import EvalResult
+    for cfg, rows in all_results.items():
+        if cfg not in args.configs:
+            results_obj = [EvalResult(**r) for r in rows]
+            elapsed = sum(r["elapsed_seconds"] for r in rows)
+            all_summaries.append(compute_summary(_CONFIG_NAMES[cfg], results_obj, elapsed))
+
+    all_summaries.sort(key=lambda s: s.config_name)
     print_comparison(all_summaries)
 
-    if args.output:
-        out_path = Path(args.output)
+    if out_path:
         payload = {
             "summaries": [vars(s) for s in all_summaries],
             "per_config_results": all_results,
