@@ -50,12 +50,15 @@ def main() -> None:
         print(f"No errors found in config {cfg}. Nothing to retry.")
         return
 
-    print(f"Found {len(errors)} error items to retry (config {cfg}), sleep={args.sleep}s between items")
+    print(
+        f"Found {len(errors)} error items to retry (config {cfg}), sleep={args.sleep}s between items"
+    )
     error_ids = {r["query_id"] for r in errors}
     items_map = _load_query_text(error_ids)
 
     if cfg == "3":
         from graph.pipeline import build_pipeline
+
         pipeline = build_pipeline()
 
         patched = 0
@@ -71,9 +74,7 @@ def main() -> None:
             print(f"  [{i}/{len(errors)}] {qid}", end=" ", flush=True)
             t0 = time.perf_counter()
             try:
-                state = pipeline.invoke(
-                    {"query_id": qid, "query": item["text"], "batch_stats": {}}
-                )
+                state = pipeline.invoke({"query_id": qid, "query": item["text"], "batch_stats": {}})
                 elapsed = time.perf_counter() - t0
                 final_label = state.get("final_label", "__none__")
                 route_to_human = bool(state.get("route_to_human"))
@@ -98,8 +99,7 @@ def main() -> None:
             path.write_text(json.dumps(data, indent=2))
 
     remaining = sum(
-        1 for r in data["per_config_results"][cfg]
-        if r["predicted_label"] in _ERROR_SENTINELS
+        1 for r in data["per_config_results"][cfg] if r["predicted_label"] in _ERROR_SENTINELS
     )
     print(f"\nDone. Patched {patched} items. Remaining errors: {remaining}")
 

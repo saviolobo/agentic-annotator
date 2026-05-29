@@ -312,6 +312,7 @@ def main() -> None:
 
     # Rebuild summaries for all configs present in the file
     from eval.evaluators import EvalResult
+
     for cfg, rows in all_results.items():
         if cfg not in args.configs:
             results_obj = [EvalResult(**r) for r in rows]
