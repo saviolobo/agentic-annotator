@@ -59,7 +59,9 @@ Assign exactly one intent label from the provided list.
 Respond with ONLY valid JSON: {"label": "<intent_name>"}"""
 
 
-def _run_config1(items: list[dict]) -> tuple[list, float]:
+def _run_config1(
+    items: list[dict], out_path: Path | None = None, all_results: dict | None = None
+) -> tuple[list, float]:
     from groq import Groq
 
     from eval.evaluators import EvalResult
@@ -69,10 +71,16 @@ def _run_config1(items: list[dict]) -> tuple[list, float]:
     valid = {e["intent_name"] for e in list_valid_intents()}
     intent_list = "\n".join(f"- {n}" for n in sorted(valid))
 
-    results: list[EvalResult] = []
+    done_ids = {r["query_id"] for r in (all_results or {}).get("1", [])}
+    results: list[EvalResult] = [EvalResult(**r) for r in (all_results or {}).get("1", [])]
+    if done_ids:
+        print(f"  Resuming: {len(done_ids)} items already done, skipping.")
+
     t_start = time.perf_counter()
 
     for i, item in enumerate(items, 1):
+        if item["query_id"] in done_ids:
+            continue
         print(f"  [1/{len(items)}→{i}] {item['query_id']}", end=" ", flush=True)
         t0 = time.perf_counter()
         try:
@@ -100,14 +108,16 @@ def _run_config1(items: list[dict]) -> tuple[list, float]:
 
         elapsed = time.perf_counter() - t0
         print(f"→ {label} ({elapsed:.1f}s)")
-        results.append(
-            EvalResult(
-                query_id=item["query_id"],
-                predicted_label=label,
-                true_label=item["true_intent"],
-                elapsed_seconds=elapsed,
-            )
+        r = EvalResult(
+            query_id=item["query_id"],
+            predicted_label=label,
+            true_label=item["true_intent"],
+            elapsed_seconds=elapsed,
         )
+        results.append(r)
+        if out_path and all_results is not None:
+            all_results["1"] = [vars(x) for x in results]
+            out_path.write_text(json.dumps({"per_config_results": all_results}, indent=2))
 
     return results, time.perf_counter() - t_start
 
@@ -115,19 +125,29 @@ def _run_config1(items: list[dict]) -> tuple[list, float]:
 # ---------- Config 2: multi-agent, no MCP ----------
 
 
-def _run_config2(items: list[dict]) -> tuple[list, float]:
+def _run_config2(
+    items: list[dict], out_path: Path | None = None, all_results: dict | None = None
+) -> tuple[list, float]:
     from agents.arbitrator import CONFIDENCE_THRESHOLD, arbitrate
     from agents.primary_annotator import annotate
     from agents.router import route as router_route
     from agents.validator import agrees_with, validate
     from eval.evaluators import EvalResult
 
-    results: list[EvalResult] = []
+    done_ids = {r["query_id"] for r in (all_results or {}).get("2", [])}
+    results: list[EvalResult] = [EvalResult(**r) for r in (all_results or {}).get("2", [])]
+    if done_ids:
+        print(f"  Resuming: {len(done_ids)} items already done, skipping.")
+
     t_start = time.perf_counter()
+    first_new = True
 
     for i, item in enumerate(items, 1):
-        if i > 1:
+        if item["query_id"] in done_ids:
+            continue
+        if not first_new:
             time.sleep(3)  # avoid Cerebras rate limits between items
+        first_new = False
         print(f"  [2/{len(items)}→{i}] {item['query_id']}", end=" ", flush=True)
         t0 = time.perf_counter()
         query = item["text"]
@@ -154,15 +174,17 @@ def _run_config2(items: list[dict]) -> tuple[list, float]:
             final_label = "__error__"
             route_to_human = False
 
-        results.append(
-            EvalResult(
-                query_id=item["query_id"],
-                predicted_label=final_label,
-                true_label=item["true_intent"],
-                route_to_human=route_to_human,
-                elapsed_seconds=elapsed,
-            )
+        r = EvalResult(
+            query_id=item["query_id"],
+            predicted_label=final_label,
+            true_label=item["true_intent"],
+            route_to_human=route_to_human,
+            elapsed_seconds=elapsed,
         )
+        results.append(r)
+        if out_path and all_results is not None:
+            all_results["2"] = [vars(x) for x in results]
+            out_path.write_text(json.dumps({"per_config_results": all_results}, indent=2))
 
     return results, time.perf_counter() - t_start
 
@@ -170,17 +192,28 @@ def _run_config2(items: list[dict]) -> tuple[list, float]:
 # ---------- Config 3: full pipeline ----------
 
 
-def _run_config3(items: list[dict]) -> tuple[list, float]:
+def _run_config3(
+    items: list[dict], out_path: Path | None = None, all_results: dict | None = None
+) -> tuple[list, float]:
     from eval.evaluators import EvalResult
     from graph.pipeline import build_pipeline
 
     pipeline = build_pipeline()
-    results: list[EvalResult] = []
+
+    done_ids = {r["query_id"] for r in (all_results or {}).get("3", [])}
+    results: list[EvalResult] = [EvalResult(**r) for r in (all_results or {}).get("3", [])]
+    if done_ids:
+        print(f"  Resuming: {len(done_ids)} items already done, skipping.")
+
     t_start = time.perf_counter()
+    first_new = True
 
     for i, item in enumerate(items, 1):
-        if i > 1:
+        if item["query_id"] in done_ids:
+            continue
+        if not first_new:
             time.sleep(10)  # avoid Cerebras rate limits between items
+        first_new = False
         print(f"  [3/{len(items)}→{i}] {item['query_id']}", end=" ", flush=True)
         t0 = time.perf_counter()
         try:
@@ -202,15 +235,17 @@ def _run_config3(items: list[dict]) -> tuple[list, float]:
             final_label = "__error__"
             route_to_human = False
 
-        results.append(
-            EvalResult(
-                query_id=item["query_id"],
-                predicted_label=final_label,
-                true_label=item["true_intent"],
-                route_to_human=route_to_human,
-                elapsed_seconds=elapsed,
-            )
+        r = EvalResult(
+            query_id=item["query_id"],
+            predicted_label=final_label,
+            true_label=item["true_intent"],
+            route_to_human=route_to_human,
+            elapsed_seconds=elapsed,
         )
+        results.append(r)
+        if out_path and all_results is not None:
+            all_results["3"] = [vars(x) for x in results]
+            out_path.write_text(json.dumps({"per_config_results": all_results}, indent=2))
 
     return results, time.perf_counter() - t_start
 
@@ -270,7 +305,7 @@ def main() -> None:
 
     for cfg in args.configs:
         print(f"\nRunning {_CONFIG_NAMES[cfg]} ...")
-        results, elapsed = _CONFIG_FNS[cfg](items)
+        results, elapsed = _CONFIG_FNS[cfg](items, out_path=out_path, all_results=all_results)
         summary = compute_summary(_CONFIG_NAMES[cfg], results, elapsed)
         all_results[cfg] = [vars(r) for r in results]
         all_summaries.append(summary)
