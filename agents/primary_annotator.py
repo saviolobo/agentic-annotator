@@ -1,6 +1,6 @@
 """Primary Annotator Agent — first-pass intent classification.
 
-Model: qwen-3-235b-a22b-instruct-2507 via Cerebras (llama-3.3-70b unavailable on this account)
+Model: gpt-oss-120b via Cerebras (llama-3.3-70b unavailable on this account)
 Tools used (called directly as Python functions):
   - guidelines-mcp: search_similar_examples, get_guidelines_for_intent
   - label-schema-mcp: list_valid_intents, validate_intent
@@ -118,7 +118,7 @@ def annotate(query: str, use_mcp: bool = True) -> AnnotatorOutput:
     """Assign an intent label to a banking customer query."""
     user_prompt = build_annotation_context(query, use_mcp=use_mcp)
     response = _get_client().chat.completions.create(
-        model="qwen-3-235b-a22b-instruct-2507",
+        model="gpt-oss-120b",
         messages=[
             {"role": "system", "content": _SYSTEM},
             {"role": "user", "content": user_prompt},

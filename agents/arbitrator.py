@@ -1,6 +1,6 @@
 """Arbitrator Agent — resolves Primary/Validator disagreements.
 
-Model: qwen-3-235b-a22b-instruct-2507 via Cerebras
+Model: gpt-oss-120b via Cerebras
 Only invoked when Primary and Validator labels differ.
 If final confidence < CONFIDENCE_THRESHOLD → sets route_to_human=True.
 Output: {final_label, confidence, explanation, route_to_human}
@@ -99,7 +99,7 @@ def arbitrate(
 ) -> ArbitratorOutput:
     """Resolve a Primary/Validator disagreement and return the final label."""
     response = _get_client().chat.completions.create(
-        model="qwen-3-235b-a22b-instruct-2507",
+        model="gpt-oss-120b",
         messages=[
             {"role": "system", "content": _SYSTEM},
             {"role": "user", "content": _build_arbitration_prompt(query, primary, validator)},

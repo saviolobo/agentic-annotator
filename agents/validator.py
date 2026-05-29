@@ -1,6 +1,6 @@
 """Validator Agent — independent second-pass annotation (blind to Primary).
 
-Model: qwen-3-235b-a22b-instruct-2507 via Cerebras
+Model: gpt-oss-120b via Cerebras
 Key constraint: receives the same query + guidelines as Primary, but NEVER sees
 Primary's label or reasoning. Agreement → high-confidence annotation.
 Disagreement → routes to Arbitrator.
@@ -57,7 +57,7 @@ def _get_client() -> Cerebras:
 def validate(query: str, use_mcp: bool = True) -> AnnotatorOutput:
     """Independently assign an intent label — blind to any prior annotation."""
     response = _get_client().chat.completions.create(
-        model="qwen-3-235b-a22b-instruct-2507",
+        model="gpt-oss-120b",
         messages=[
             {"role": "system", "content": _SYSTEM},
             {"role": "user", "content": build_annotation_context(query, use_mcp=use_mcp)},

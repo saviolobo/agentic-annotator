@@ -22,15 +22,7 @@ JP Morgan's MAFA system (AAAI 2026).
 Five specialized agents replace manual annotation for high-confidence items
 while routing ambiguous cases to a human review queue.
 
-```
-Router → [SIMPLE] → Primary Annotator → Quality Controller → ✓
-       → [COMPLEX] → Primary Annotator ─┐
-                   → Validator ──────────┴─ check agreement
-                       → [agree]    → Quality Controller → ✓
-                       → [disagree] → Arbitrator
-                           → [confident] → Quality Controller → ✓
-                           → [uncertain] → Human Review Queue
-```
+![Architecture](docs/architecture.png)
 
 **Key pattern:** LangGraph Send API runs Primary Annotator and Validator
 in parallel on COMPLEX queries, cutting latency on the most expensive path.
