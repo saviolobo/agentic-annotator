@@ -16,9 +16,6 @@ JP Morgan's MAFA system (AAAI 2026).
 | | This project | JP Morgan MAFA (AAAI 2026) |
 |---|---|---|
 | Agreement rate | **95.8%** | 86.0% |
-| Macro-F1 | **89.6%** | — |
-| Cost per item | **~$0.003** | — |
-| Manual annotation | — | ~$0.15 |
 
 > Evaluated on a 333-item holdout sample from the Banking77 test split.
 > Full pipeline uses 5 agents with MCP-backed guideline retrieval and
