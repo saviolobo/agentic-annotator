@@ -11,10 +11,11 @@ on the Banking77 benchmark (13,083 queries, 77 intents), inspired by
 JP Morgan's MAFA system (AAAI 2026).
 
 > **Why this exists:** Manual data annotation costs enterprises ~$0.15/item and
-> doesn't scale. JP Morgan Chase eliminated a 1M-utterance backlog saving 5,000+
-> hours/year using a multi-agent approach (MAFA, AAAI 2026). This project
-> independently reproduces and benchmarks a similar architecture on the public
-> Banking77 dataset, enabling direct comparison against their published results.
+> doesn't scale. JP Morgan Chase published a multi-agent annotation framework
+> (MAFA, AAAI 2026) that automated large-scale intent annotation, reporting 86%
+> agreement with human annotators. This project independently reproduces and
+> benchmarks a similar architecture on the public Banking77 dataset, enabling
+> direct comparison against their published results.
 
 ---
 
