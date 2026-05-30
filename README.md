@@ -64,7 +64,6 @@ Three [FastMCP](https://github.com/jlowin/fastmcp) servers expose tools to agent
 | Vector search | Redis Stack + sentence-transformers/all-MiniLM-L6-v2 |
 | API | FastAPI |
 | Frontend | Next.js 15 + shadcn/ui + Recharts |
-| Tracing | Langfuse (self-hosted) |
 | Dataset | Banking77 — PolyAI (CC-BY 4.0) |
 
 ---
@@ -74,7 +73,6 @@ Three [FastMCP](https://github.com/jlowin/fastmcp) servers expose tools to agent
 ```bash
 cp .env.example .env        # add GROQ_API_KEY, CEREBRAS_API_KEY
 uv sync
-docker compose up -d        # Langfuse tracing
 colima start && docker run -d -p 6379:6379 redis/redis-stack:latest
 uv run python mcp_servers/guidelines_mcp/indexer.py
 uv run python main.py       # API on :8000
